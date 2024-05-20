@@ -1,0 +1,62 @@
+## make barplot of cv by variable and cross type, for each unit
+
+setwd("C:/Users/mstreis/Desktop/somatic_mutation_mim_aur")
+df <- read.table("cv_mean_fitness_z_all.txt", header=TRUE)
+
+# Assuming your dataframe is named df
+
+library(ggplot2)
+
+# Define the order of variables
+variable_order <- c("days_to_germinate", "growth_inverse", "drought_b", "survival_time", "biomass_inverse")
+
+# Convert the "variable" column to a factor with the specified order
+df$variable <- factor(df$variable, levels = variable_order)
+
+# Create the barplot
+ggplot(df, aes(x = variable, y = cv, fill = cross)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~unit, scales = "free") +
+  labs(x = "Variable", y = "Coefficient of Variation", fill = "Cross") +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+
+#########
+df_2 <- read.table("cv_prop.txt", header=TRUE)
+
+# Define the order of variables
+variable_order <- c("days_to_germinate", "growth_inverse", "drought_b", "survival_time", "biomass_inverse")
+
+# Convert the "variable" column to a factor with the specified order
+df_2$variable <- factor(df_2$variable, levels = variable_order)
+
+# Create the barplot
+ggplot(df_2, aes(x = variable, y = dev)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~unit, scales = "free") +
+  labs(x = "Variable", y = "Coefficient of Variation")  +
+  theme_classic() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
+
+
+####
+
+# Assuming your dataframe is named df_2
+
+# Define the order of variables
+variable_order <- c("days_to_germinate", "growth_inverse", "drought_b", "survival_time", "biomass_inverse")
+
+# Convert the "variable" column to a factor with the specified order
+df_2$variable <- factor(df_2$variable, levels = variable_order)
+
+# Create the barplot with horizontal bars and vertical panels
+ggplot(df_2, aes(y = variable, x = dev)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  facet_wrap(~unit, scales = "free") +
+  labs(y = "Variable", x = "Coefficient of Variation") +
+  coord_flip() +
+  theme_classic() +
+  theme(axis.text.y = element_text(angle = 0, hjust = 1)) +
+  xlim(-10, 25)
