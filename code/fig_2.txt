@@ -1,0 +1,27 @@
+perc < - read.table(10_units_perc_dev_long.txt", header=TRUE)
+
+library(ggplot2)
+
+
+# Define the correct order for the 'unit' and 'trait' factors
+unit_order <- c("A1", "A2", "C1", "C2", "E3", "F1", "H1", "K1", "O1", "R2")
+trait_order <- c("drought", "sqrt_surv", "sqrt_biomass")
+
+# Remove any rows with NA values in 'trait' or 'unit'
+perc <- na.omit(perc[, c("unit", "trait", "perc_dev_mean")])
+
+# Reorder the 'unit' and 'trait' factors
+perc$unit <- factor(perc$unit, levels = rev(unit_order))
+perc$trait <- factor(perc$trait, levels = rev(trait_order))  # Reverse order for correct plotting
+
+# Create the horizontal barplot with classic theme
+ggplot(perc, aes(x = perc_dev_mean, y = unit, fill = trait)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Percentage Deviation (Mean)", y = "Unit", title = "Horizontal Barplot by Trait") +
+  theme_classic()
+
+## saved file: percent_deviation_mean_10_units.pdf
+
+##################
+##################
+
