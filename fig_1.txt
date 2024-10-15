@@ -1,0 +1,14 @@
+# to recreate the paired line plot in Fig 1:
+
+library(tidyverse)
+library(ggpubr)
+library(gridExtra)
+pair <- read.table("fruit_seed_wt_count_paired_all_units_05-06-2024.txt", header=TRUE)
+p1 <- ggpaired(pair, cond1 = "A_seed_count", cond2 = "G_avg_seed_count", palette = "jco", width=0.5, xlab= "Cross Type", ylab = "Seed Count (g)", point.size = 2, line.size = 1, color = "condition")
+p2 <- ggpaired(pair, cond1 = "A_seed_wt", cond2 = "G_avg_seed_wt", palette = "jco", width=0.5, xlab= "Cross Type", ylab = "Seed Weight (g)", point.size = 2, line.size = 1, color = "condition")
+p3 <- ggpaired(pair, cond1 = "A_fruit_wt", cond2 = "G_avg_fruit_wt", palette = "jco", width=0.5, xlab= "Cross Type", ylab = "Fruit Weight (g)", point.size = 2, line.size = 1, color = "condition")
+
+grid.arrange(p1, p2, p3, nrow = 1)
+
+
+

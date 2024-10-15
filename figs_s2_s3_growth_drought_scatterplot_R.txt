@@ -1,0 +1,113 @@
+### scatterplot of growth rate vs drought tolerance (b) for all 4 units, with separate regressions for cross type
+
+library(tidyverse)
+library(ggplot2)
+library(gridExtra)
+setwd("C:/Users/mstreis/Desktop/somatic_mutation_mim_aur")
+a1 <- read.table("A1_final_data.txt", header=TRUE, na.string="NA")
+a2 <- read.table("A2_final_data.txt", header=TRUE, na.string="NA")
+c1 <- read.table("C1_final_data.txt", header=TRUE, na.string="NA")
+c2 <- read.table("C2_final_data.txt", header=TRUE, na.string="NA")
+
+## scale data so it is mean = 0, stdev = 1
+numeric_cols <- c('days_to_germinate', 'growth_rate_day', 'drought_b', 'survival_time', 'biomass')
+a1_scaled <- a1 %>%
+  mutate(across(all_of(numeric_cols), scale))
+
+a2_scaled <- a2 %>%
+  mutate(across(all_of(numeric_cols), scale))
+
+c1_scaled <- c1 %>%
+  mutate(across(all_of(numeric_cols), scale))
+  
+c2_scaled <- c2 %>%
+  mutate(across(all_of(numeric_cols), scale))
+
+
+# Create a scatter plot of drought vs growth rate, with regression lines for each cross
+p1 <- ggplot(a1_scaled, aes(x = growth_rate_day, y = drought_b, color = cross)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(x = "Growth Rate (z score)",
+       y = "Drought Tolerance (z score)",
+       color = "Cross") +
+  xlim(-1,3) +
+  ylim(-2,4) +
+  theme_classic()
+
+p2 <- ggplot(a2_scaled, aes(x = growth_rate_day, y = drought_b, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(x = "Growth Rate (z score)",
+         y = "Drought Tolerance (z score)",
+         color = "Cross") +
+    xlim(-1,3) +
+    ylim(-2,4) +
+  theme_classic()
+
+p3 <- ggplot(c1_scaled, aes(x = growth_rate_day, y = drought_b, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(x = "Growth Rate (z score)",
+         y = "Drought Tolerance (z score)",
+         color = "Cross") +
+    xlim(-1,3) +
+    ylim(-2,4) +
+  theme_classic()
+  
+p4 <- ggplot(c2_scaled, aes(x = growth_rate_day, y = drought_b, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(x = "Growth Rate (z score)",
+         y = "Drought Tolerance (z score)",
+         color = "Cross") +
+    xlim(-1,3) +
+    ylim(-2,4) +
+  theme_classic()
+
+grid.arrange(p1,p2,p3,p4, nrow=2)
+
+#### Create a scatter plot of drought vs growth rate, with regression lines for each cross
+
+p5 <- ggplot(a1_scaled, aes(y = drought_b, x = biomass, color = cross)) +
+  geom_point() +
+  geom_smooth(method = "lm", se = FALSE) +
+  labs(y = "Drought tolerance (z score)",
+       x = "Biomass (z score)",
+       color = "Cross") +
+       xlim(-2,3) +
+       ylim(-2,4) +
+  theme_classic()
+
+p6 <- ggplot(a2_scaled, aes(y = drought_b, x = biomass, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(y = "Drought tolerance (z score)",
+         x = "Biomass (z score)",
+         color = "Cross") +
+         xlim(-2,3) +
+         ylim(-2,4) +
+  theme_classic()
+  
+p7 <- ggplot(c1_scaled, aes(y = drought_b, x = biomass, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(y = "Drought tolerance (z score)",
+         x = "Biomass (z score)",
+         color = "Cross") +
+         xlim(-2,3) +
+         ylim(-2,4) +
+  theme_classic()
+  
+p8 <- ggplot(c2_scaled, aes(y = drought_b, x = biomass, color = cross)) +
+  geom_point() +
+    geom_smooth(method = "lm", se = FALSE) +
+    labs(y = "Drought tolerance (z score)",
+         x = "Biomass (z score)",
+         color = "Cross") +
+         xlim(-2,3) +
+         ylim(-2,4) +
+  theme_classic()
+
+library(gridExtra)
+grid.arrange(p5,p6,p7,p8, nrow=2)

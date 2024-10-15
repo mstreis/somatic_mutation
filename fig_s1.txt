@@ -1,0 +1,35 @@
+########## To create boxplots of raw data for the supplement:
+
+library(ggplot2)
+library(gridExtra)
+
+df <- read.table("ten_units_drought_survival_biomass_transform_data.txt", header=TRUE, na.strings="NA")
+
+#### pearson correlation coefficient between drought_b and sqrt_surv:
+
+cor.test(df$drought_b, df$sqrt_surv, use = "complete.obs")
+
+###################################################################
+#        Pearson's product-moment correlation                     #  
+#                                                                 #
+#data:  df$drought_b and df$sqrt_surv                             #
+#t = 23.594, df = 947, p-value < 2.2e-16                          #
+#alternative hypothesis: true correlation is not equal to 0       # 
+#95 percent confidence interval:                                  #
+# 0.5667521 0.6470299                                             # 
+#sample estimates:                                                #
+#      cor                                                        # 
+#0.6084452                                                        # 
+###################################################################
+
+
+## boxplots:
+
+p1 <- ggplot(df, aes(x=unit, y=drought_b, fill = cross)) + geom_boxplot() + theme_classic()
+p2 <- ggplot(df, aes(x=unit, y=survival_time, fill = cross)) + geom_boxplot() + theme_classic()
+p3 <- ggplot(df, aes(x=unit, y=biomass, fill = cross)) + geom_boxplot() + theme_classic()
+
+library(gridExtra)
+grid.arrange(p1,p2,p3, nrow=3)
+
+## saved file: boxplot_10_units_color_by_cross.eps
